@@ -26,9 +26,11 @@ export default function App() {
   async function getAnime(id = 1) {
     try {
       const Data = await axios.get(
-        `${AniApi}/meta/anilist/recent-episode?page=${id}&perPage=20`
+        `${AniApi}/meta//anime/gogoanime/recent-episodes`
       );
-      setRecent((recent) => [...recent, ...Data.data.results]);
+
+      //api.consumet.org/anime/gogoanime/recent-episodes
+      https: setRecent((recent) => [...recent, ...Data.data.results]);
     } catch (err) {
       console.error(err);
       return { error: "Could not retrieve recent episodes" };
