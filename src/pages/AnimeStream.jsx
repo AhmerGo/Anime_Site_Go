@@ -7,6 +7,17 @@ import "./../components/css/AnimeStream.css";
 const AnimeStream = () => {
   const { animeId, episodeId } = useParams();
 
+  const mainStream =
+    streamData &&
+    streamData.stream &&
+    streamData.stream.plyr &&
+    streamData.stream.plyr.main;
+  const backupStream =
+    streamData &&
+    streamData.stream &&
+    streamData.stream.plyr &&
+    streamData.stream.plyr.backup;
+
   const [streamData, setStreamData] = useState({
     info: {
       title: "",
@@ -82,7 +93,7 @@ const AnimeStream = () => {
         <div className="animeVideo">
           {/* Use conditional rendering for iframe source */}
           <iframe
-            src={streamData.stream.plyr.main || streamData.stream.plyr.backup} // adjusted based on your logic for displaying main or backup
+            src={mainStream || backupStream}
             frameBorder="0"
             allowFullScreen={true}
             title={`Episode ${streamData.info.episode}`}
