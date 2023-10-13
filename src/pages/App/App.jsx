@@ -25,9 +25,7 @@ export default function App() {
 
   async function getAnime(id = 1) {
     try {
-      const Data = await axios.get(
-        `${AniApi}/meta//anime/gogoanime/recent-episodes`
-      );
+      const Data = await axios.get(`${AniApi}/anime/gogoanime/recent-episodes`);
 
       //api.consumet.org/anime/gogoanime/recent-episodes
       https: setRecent((recent) => [...recent, ...Data.data.results]);
