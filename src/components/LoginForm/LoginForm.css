@@ -1,4 +1,4 @@
-.login{
+.login {
   position: relative;
   display: flex;
   justify-content: center;
@@ -11,12 +11,21 @@
 
 .form-container {
   position: relative;
-  padding:45px;
-  background-color:black;;
+  padding: 45px;
+  background-color: black;
   width: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 14px;
+}
+
+.form-container input {
+  color: black; /* This makes the text inside the input fields white */
+  background-color: white; /* This is optional; it sets the background color of the input field */
+  border: none; /* Removes border */
+  padding: 10px; /* Adds some padding inside the input */
+  margin: 10px 0; /* Adds some margin outside the input */
+  border-radius: 4px; /* Rounds the corners of the input */
 }
 
 .login-button {
