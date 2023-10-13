@@ -75,24 +75,38 @@ const AnimeStream = () => {
     <div className="animeStream">
       <div className="animeStreamContainer">
         <div className="animeTitle">
-          <h1>
-            {streamData.info.title} - Episode {streamData.info.episode}
-          </h1>
+          <span>{streamData.info.title}</span>
+          {/* display other information like episode number or description if needed */}
         </div>
         <div className="animeVideo">
-          {/* The iframe src URL can be streamData.stream.iframe.default, streamData.stream.plyr.main, or any other URL you prefer. Adjust as necessary. */}
+          {/* Use conditional rendering for iframe source */}
           <iframe
-            src={streamData.stream.plyr.main}
+            src={streamData.stream.plyr.main || streamData.stream.plyr.backup} // adjusted based on your logic for displaying main or backup
             frameBorder="0"
             allowFullScreen={true}
-            title={`${streamData.info.title} Episode ${streamData.info.episode}`}
+            title={`Episode ${streamData.info.episode}`}
             allow="autoplay; picture-in-picture"
             webkitallowfullscreen="true"
             mozallowfullscreen="true"
           ></iframe>
         </div>
-        {/* Add any additional components or information you want to render */}
+        <div className="epListContainer">
+          <div className="epList">
+            {/* Conditional rendering for episodes */}
+            {streamData.info.episodes.map((ep, index) => (
+              <Link to={`/watch/${ep.id}/${animeId}`} key={index}>
+                <button
+                  className={ep.id === parseInt(episodeId) ? "active" : ""}
+                >
+                  {ep.number}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* You can also display additionalData if needed */}
       </div>
+      {/* <DiscussionPage /> */}
     </div>
   );
 };
