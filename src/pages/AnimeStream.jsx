@@ -1,107 +1,93 @@
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { AniApi } from "../components/api";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import React from "react";
-// import DiscussionPage from "./DiscussionPage";
 import "./../components/css/AnimeStream.css";
+// import DiscussionPage from "./DiscussionPage";
+import { AniApi } from "../components/api";
 
-export default function AnimeStream() {
-  const [data, setData] = useState("");
-  const [details, setDetails] = useState({});
-  const [player, setPlayer] = useState("");
-  const [display, setDisplay] = useState(false);
+const AnimeStream = () => {
   const { episodeId, animeId } = useParams();
+  const [data, setData] = useState(null);
+  const [details, setDetails] = useState({});
+  const [player, setPlayer] = useState(null);
+  const [display, setDisplay] = useState(false);
   // const [comments, setComments] = useState([]);
 
-  const getAnimeStream = async () => {
-    try {
-      const animeVid = await axios.get(
-        `https://api.amvstr.me/api/v2/stream/${episodeId}`
-      );
-      console.log(animeVid);
-      setPlayer(animeVid?.data?.data?.player?.main);
-      setData(animeVid?.data?.data?.plyr?.backup);
-      console.log(episodeId, animeId);
-      //  const response = await axios.get(`/api/discussions?episodeId=${episodeId}`);
-      //  setComments(response.data.discussions);
-    } catch (err) {
-      console.error(err);
-      return { error: "Could not show anime stream" };
-    }
-  };
-
-  const handleDisplay = () => {
-    setDisplay(false);
-  };
-
-  const handlePlayer = () => {
-    setDisplay(true);
-  };
-  const getAnimeDetails = async () => {
-    try {
-      const api = await fetch(`${AniApi}/meta/anilist/info/${animeId}`);
-      const res = await api.json();
-      setDetails(res);
-    } catch (err) {
-      console.error(err);
-      return { error: "Could not show anime details" };
-    }
-  };
   useEffect(() => {
+    const getAnimeDetails = async () => {
+      try {
+        const response = await fetch(`${AniApi}/meta/anilist/info/${animeId}`);
+        const animeDetails = await response.json();
+        setDetails(animeDetails);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getAnimeStream = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.amvstr.me/api/v2/stream/${episodeId}`
+        );
+        const animeVid = response.data;
+        if (animeVid.code === 200) {
+          setPlayer(animeVid.stream.plyr.main);
+          setData(animeVid.stream.plyr.backup);
+        } else {
+          throw new Error("Could not retrieve anime stream data");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     getAnimeDetails();
     getAnimeStream();
     // eslint-disable-next-line
   }, [animeId, episodeId]);
+
+  const toggleDisplay = () => {
+    setDisplay((prevDisplay) => !prevDisplay);
+  };
+
   return (
-    <>
-      <div className="animeStream" key={episodeId}>
-        <div className="animeStreamContainer">
-          <div className="animeTitle">
-            <span>{details.title?.romaji}</span>
+    <div className="animeStream" key={episodeId}>
+      <div className="animeStreamContainer">
+        <div className="animeTitle">
+          <span>{details.info?.title}</span>
+        </div>
+        <div className="animeSource">
+          <i className="playerArrow" onClick={toggleDisplay}></i>
+          <i className="server" onClick={toggleDisplay}></i>
+        </div>
+        <div className="animeVideoList">
+          <div className="animeVideo">
+            <iframe
+              src={display ? player : data}
+              frameBorder="0"
+              allowFullScreen={true}
+              title={`Episode ${details.info?.episode}`}
+              allow="autoplay; picture-in-picture"
+              webkitallowfullscreen="true"
+              mozallowfullscreen="true"
+            ></iframe>
           </div>
-          <div className="animeSource">
-            <i className="playerArrow" onClick={handleDisplay}></i>
-            <i className="server" onClick={handlePlayer}></i>
-          </div>
-          <div className="animeVideoList">
-            <div className="animeVideo">
-              {display ? (
-                <iframe
-                  src={player}
-                  frameBorder="0"
-                  allowFullScreen="allowfullscreen"
-                  title={episodeId}
-                  allow="picture-in-picture"
-                  webkitallowfullscreen="true"
-                ></iframe>
-              ) : (
-                <iframe
-                  src={data}
-                  allowFullScreen="allowfullscreen"
-                  title={episodeId}
-                  allow="picture-in-picture"
-                  webkitallowfullscreen="true"
-                ></iframe>
-              )}
-            </div>
-            <div className="epListContainer">
-              <div className="epList">
-                {details?.episodes?.map((ep) => (
-                  <Link to={`/watch/${ep.id}/${animeId}`} key={ep.id}>
-                    {ep.id === episodeId ? (
-                      <button className="active">{ep.number}</button>
-                    ) : (
-                      <button>{ep.number}</button>
-                    )}
-                  </Link>
-                ))}
-              </div>
+          <div className="epListContainer">
+            <div className="epList">
+              {details.info?.episodes?.map((ep) => (
+                <Link to={`/watch/${ep.id}/${animeId}`} key={ep.id}>
+                  <button className={ep.id === episodeId ? "active" : ""}>
+                    {ep.number}
+                  </button>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
       </div>
       {/* <DiscussionPage /> */}
-    </>
+    </div>
   );
-}
+};
+
+export default AnimeStream;
