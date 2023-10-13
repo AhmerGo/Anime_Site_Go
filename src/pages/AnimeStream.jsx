@@ -17,7 +17,7 @@ export default function AnimeStream() {
   const getAnimeStream = async () => {
     try {
       const animeVid = await axios.get(
-        `https://api.amvstr.ml/api/v2/stream/${episodeId}`
+        `https://api.amvstr.me/api/v2/stream/${episodeId}`
       );
       console.log(animeVid);
       setPlayer(animeVid?.data?.data?.player?.main);
