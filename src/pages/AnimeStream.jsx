@@ -7,18 +7,17 @@ import { AniApi } from "../components/api";
 
 const AnimeStream = () => {
   const { episodeId, animeId } = useParams();
-  const [data, setData] = useState(null);
-  const [details, setDetails] = useState({});
-  const [player, setPlayer] = useState(null);
-  const [display, setDisplay] = useState(false);
-  // const [comments, setComments] = useState([]);
+  const [animeDetails, setAnimeDetails] = useState({});
+  const [streamData, setStreamData] = useState({});
+  const [displayMain, setDisplayMain] = useState(true); // state to toggle between main and backup stream
 
   useEffect(() => {
     const getAnimeDetails = async () => {
       try {
-        const response = await fetch(`${AniApi}/meta/anilist/info/${animeId}`);
-        const animeDetails = await response.json();
-        setDetails(animeDetails);
+        const response = await axios.get(
+          `${AniApi}/meta/anilist/info/${animeId}`
+        );
+        setAnimeDetails(response.data);
       } catch (err) {
         console.error(err);
       }
@@ -29,10 +28,8 @@ const AnimeStream = () => {
         const response = await axios.get(
           `https://api.amvstr.me/api/v2/stream/${episodeId}`
         );
-        const animeVid = response.data;
-        if (animeVid.code === 200) {
-          setPlayer(animeVid.stream.plyr.main);
-          setData(animeVid.stream.plyr.backup);
+        if (response.data.code === 200) {
+          setStreamData(response.data);
         } else {
           throw new Error("Could not retrieve anime stream data");
         }
@@ -43,47 +40,42 @@ const AnimeStream = () => {
 
     getAnimeDetails();
     getAnimeStream();
-    // eslint-disable-next-line
-  }, [animeId, episodeId]);
+  }, [animeId, episodeId]); // dependencies for the useEffect
 
-  const toggleDisplay = () => {
-    setDisplay((prevDisplay) => !prevDisplay);
+  const toggleStream = () => {
+    setDisplayMain((prev) => !prev); // toggle between main and backup stream
   };
 
   return (
-    <div className="animeStream" key={episodeId}>
+    <div className="animeStream">
       <div className="animeStreamContainer">
-        <div className="animeTitle">
-          <span>{details.info?.title}</span>
-        </div>
-        <div className="animeSource">
-          <i className="playerArrow" onClick={toggleDisplay}></i>
-          <i className="server" onClick={toggleDisplay}></i>
-        </div>
-        <div className="animeVideoList">
-          <div className="animeVideo">
-            <iframe
-              src={display ? player : data}
-              frameBorder="0"
-              allowFullScreen={true}
-              title={`Episode ${details.info?.episode}`}
-              allow="autoplay; picture-in-picture"
-              webkitallowfullscreen="true"
-              mozallowfullscreen="true"
-            ></iframe>
-          </div>
-          <div className="epListContainer">
-            <div className="epList">
-              {details.info?.episodes?.map((ep) => (
-                <Link to={`/watch/${ep.id}/${animeId}`} key={ep.id}>
-                  <button className={ep.id === episodeId ? "active" : ""}>
-                    {ep.number}
-                  </button>
-                </Link>
-              ))}
+        {/* Conditional rendering to handle if the data is not yet received */}
+        {streamData.info && (
+          <>
+            <div className="animeTitle">
+              <span>{streamData.info.title}</span>
             </div>
-          </div>
-        </div>
+            <div className="animeVideo">
+              <iframe
+                src={
+                  displayMain
+                    ? streamData.stream.plyr.main
+                    : streamData.stream.plyr.backup
+                }
+                frameBorder="0"
+                allowFullScreen={true}
+                title={`Episode ${streamData.info.episode}`}
+                allow="autoplay; picture-in-picture"
+                webkitallowfullscreen="true"
+                mozallowfullscreen="true"
+              ></iframe>
+            </div>
+            <button onClick={toggleStream}>
+              Switch to {displayMain ? "Backup" : "Main"} Stream
+            </button>
+            {/* Other components */}
+          </>
+        )}
       </div>
       {/* <DiscussionPage /> */}
     </div>
