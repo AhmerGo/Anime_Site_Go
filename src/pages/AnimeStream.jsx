@@ -1,126 +1,109 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { AniApi } from "../components/api";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import React from "react";
+// import DiscussionPage from "./DiscussionPage";
 import "./../components/css/AnimeStream.css";
 
-const AnimeStream = () => {
-  const { animeId, episodeId } = useParams();
+export default function AnimeStream() {
+  const [data, setData] = useState("");
+  const [details, setDetails] = useState({});
+  const [display, setDisplay] = useState(false);
+  const { episodeId, animeId } = useParams();
+  // const [comments, setComments] = useState([]);
 
-  const mainStream =
-    streamData &&
-    streamData.stream &&
-    streamData.stream.plyr &&
-    streamData.stream.plyr.main;
-  const backupStream =
-    streamData &&
-    streamData.stream &&
-    streamData.stream.plyr &&
-    streamData.stream.plyr.backup;
-
-  const [streamData, setStreamData] = useState({
-    info: {
-      title: "",
-      episode: "",
-      id: "",
-    },
-    stream: {
-      plyr: {
-        main: "",
-        backup: "",
-      },
-      multi: {
-        main: {
-          url: "",
-          isM3U8: false,
-          quality: "",
-        },
-        backup: {
-          url: "",
-          isM3U8: false,
-          quality: "",
-        },
-      },
-      tracks: {
-        file: "",
-        kind: "",
-      },
-      iframe: {
-        default: "",
-        backup: "",
-      },
-      nspl: {
-        main: "",
-        backup: "",
-      },
-    },
-  });
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchStreamData = async () => {
-      try {
-        // Replace with your actual API endpoint
-        const response = await axios.get(
-          `https://api.amvstr.me/api/v2/stream/${episodeId}`
-        );
-        if (response.data && response.data.code === 200) {
-          setStreamData(response.data);
-          setIsLoading(false);
-        } else {
-          // handle error response
-        }
-      } catch (error) {
-        // handle errors during the request
+  const getAnimeStream = async () => {
+    try {
+      const response = await fetch(
+        `https://api.amvstr.me/api/v2/stream/${episodeId}`
+      );
+      const animeData = await response.json();
+      if (animeData.code === 200) {
+        setData(animeData);
+      } else {
+        console.error("API call was not successful");
       }
-    };
+    } catch (err) {
+      console.error("Could not fetch anime stream", err);
+    }
+  };
 
-    fetchStreamData();
+  const handleDisplay = () => {
+    setDisplay(false);
+  };
+
+  const handlePlayer = () => {
+    setDisplay(true);
+  };
+  const getAnimeDetails = async () => {
+    try {
+      const api = await fetch(`${AniApi}/meta/anilist/info/${animeId}`);
+      const res = await api.json();
+      setDetails(res);
+    } catch (err) {
+      console.error(err);
+      return { error: "Could not show anime details" };
+    }
+  };
+  useEffect(() => {
+    getAnimeDetails();
+    getAnimeStream();
+    // eslint-disable-next-line
   }, [animeId, episodeId]);
 
-  if (isLoading) {
+  if (!data) {
     return <div>Loading...</div>;
   }
 
+  const mainPlayerUrl = data?.plyr?.main;
+  const backupPlayerUrl = data?.plyr?.backup;
+
   return (
-    <div className="animeStream">
-      <div className="animeStreamContainer">
-        <div className="animeTitle">
-          <span>{streamData.info.title}</span>
-          {/* display other information like episode number or description if needed */}
-        </div>
-        <div className="animeVideo">
-          {/* Use conditional rendering for iframe source */}
-          <iframe
-            src={mainStream || backupStream}
-            frameBorder="0"
-            allowFullScreen={true}
-            title={`Episode ${streamData.info.episode}`}
-            allow="autoplay; picture-in-picture"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
-          ></iframe>
-        </div>
-        <div className="epListContainer">
-          <div className="epList">
-            {/* Conditional rendering for episodes */}
-            {streamData.info.episodes.map((ep, index) => (
-              <Link to={`/watch/${ep.id}/${animeId}`} key={index}>
-                <button
-                  className={ep.id === parseInt(episodeId) ? "active" : ""}
-                >
-                  {ep.number}
-                </button>
-              </Link>
-            ))}
+    <>
+      <div className="animeStream" key={episodeId}>
+        <div className="animeStreamContainer">
+          <div className="animeTitle">
+            <span>{details.title?.romaji}</span>
+          </div>
+          <div className="animeSource">
+            <i className="playerArrow" onClick={handleDisplay}></i>
+            <i className="server" onClick={handlePlayer}></i>
+          </div>
+          <div className="animeVideoList">
+            <div className="animeVideo">
+              {display ? (
+                <iframe
+                  src={mainPlayerUrl}
+                  frameBorder="0"
+                  allowFullScreen
+                  title={`Main Player - Episode ${episodeId}`}
+                ></iframe>
+              ) : (
+                <iframe
+                  src={backupPlayerUrl}
+                  allowFullScreen
+                  title={`Backup Player - Episode ${episodeId}`}
+                ></iframe>
+              )}
+            </div>
+            <div className="epListContainer">
+              <div className="epList">
+                {details?.episodes?.map((ep) => (
+                  <Link to={`/watch/${ep.id}/${animeId}`} key={ep.id}>
+                    {ep.id === episodeId ? (
+                      <button className="active">{ep.number}</button>
+                    ) : (
+                      <button>{ep.number}</button>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-        {/* You can also display additionalData if needed */}
       </div>
       {/* <DiscussionPage /> */}
-    </div>
+    </>
   );
-};
-
-export default AnimeStream;
+}
