@@ -51,7 +51,7 @@ const AnimeStream = () => {
       try {
         // Replace with your actual API endpoint
         const response = await axios.get(
-          `https://api.example.com/anime/${animeId}/episode/${episodeId}`
+          `https://api.amvstr.me/api/v2/stream/${episodeId}`
         );
         if (response.data && response.data.code === 200) {
           setStreamData(response.data);
