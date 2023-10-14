@@ -22,30 +22,26 @@ export default function RecentAnime(props) {
   //   }
   //   renderOnCall.current = true;
   // }, []);
-  const ref = useRef(null);
+  const { recent, popular, loading, handleClick } = props;
 
-  const handleClick = () => {
-    props.handleClick();
-  };
-
-  const { recent } = props;
-
-  useFetchInitialData(recent, ref)
+  if (loading) {
+    return <p>Loading...</p>; // You can replace this with a loading spinner or any other indicator
+  }
 
   return (
     <>
       <h3 className="categoryTitle">Popular Anime</h3>
       <div className="animeGrid">
-          {props.popular.map((rec) => (
-            <AnimeCard rec={rec} key={rec.id} handleClick={handleClick} />
-          ))}
-          </div>
+        {popular.map((anime) => (
+          <AnimeCard rec={anime} key={anime.id} handleClick={handleClick} />
+        ))}
+      </div>
       <h3 className="categoryTitle">Recent Anime</h3>
       <div className="animeGrid">
-        {props.recent && props.recent.map((rec) => (
-          <AnimeCard rec={rec} key={rec.id} handleClick={handleClick} />
+        {recent.map((anime) => (
+          <AnimeCard rec={anime} key={anime.id} handleClick={handleClick} />
         ))}
       </div>
     </>
-  )
+  );
 }

@@ -19,41 +19,64 @@ export default function App() {
   const [user, setUser] = useState(getUser());
   const [recent, setRecent] = useState([]);
   const [popular, setPopular] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(null);
   const searchRef = useRef();
   const renderOnCall = useRef(false);
 
-  async function getAnime(id = 1) {
-    try {
-      const Data = await axios.get(`${AniApi}/anime/gogoanime/recent-episodes`);
-
-      //api.consumet.org/anime/gogoanime/recent-episodes
-      https: setRecent((recent) => [...recent, ...Data.data.results]);
-    } catch (err) {
-      console.error(err);
-      return { error: "Could not retrieve recent episodes" };
-    }
-  }
-
-  async function getPopularAnime(id = 1) {
-    try {
-      const pop = await axios.get(
-        `${AniApi}/meta/anilist/popular?page=${id}&perPage=20`
-      );
-      setPopular((popular) => [...popular, ...pop.data.results]);
-    } catch (err) {
-      console.err(err);
-      return { error: "Could not retrieve popular episodes" };
-    }
-  }
-
   useEffect(() => {
-    if (!renderOnCall.current) {
-      getAnime(1);
-      getPopularAnime();
+    async function fetchAnime() {
+      try {
+        const recentData = await axios.get(
+          `${AniApi}/anime/gogoanime/recent-episodes`
+        );
+        setRecent(recentData.data.results);
+
+        const popularData = await axios.get(
+          `${AniApi}/meta/anilist/popular?page=1&perPage=20`
+        );
+        setPopular(popularData.data.results);
+      } catch (err) {
+        console.error("Error fetching data: ", err);
+      } finally {
+        setLoading(false);
+      }
     }
-    renderOnCall.current = true;
+
+    fetchAnime();
   }, []);
+
+  // async function getAnime(id = 1) {
+  //   try {
+  //     const Data = await axios.get(`${AniApi}/anime/gogoanime/recent-episodes`);
+
+  //     //api.consumet.org/anime/gogoanime/recent-episodes
+  //     setRecent((recent) => [...recent, ...Data.data.results]);
+  //   } catch (err) {
+  //     console.error(err);
+  //     return { error: "Could not retrieve recent episodes" };
+  //   }
+  // }
+
+  // async function getPopularAnime(id = 1) {
+  //   try {
+  //     const pop = await axios.get(
+  //       `${AniApi}/meta/anilist/popular?page=${id}&perPage=20`
+  //     );
+  //     setPopular((popular) => [...popular, ...pop.data.results]);
+  //   } catch (err) {
+  //     console.err(err);
+  //     return { error: "Could not retrieve popular episodes" };
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (!renderOnCall.current) {
+  //     getAnime(1);
+  //     getPopularAnime();
+  //   }
+  //   renderOnCall.current = true;
+  // }, []);
 
   const handleChange = async (input) => {
     try {
@@ -78,7 +101,22 @@ export default function App() {
     <main className="App">
       {user ? (
         <>
-          <NavBar
+          <NavBar user={user} setUser={setUser} handleChange={handleChange} />
+          {search && <Searching search={search} handleClick={handleClick} />}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <RecentAnime
+                  recent={recent}
+                  popular={popular}
+                  loading={loading}
+                  handleClick={handleClick}
+                />
+              }
+            />
+
+            {/* <NavBar
             user={user}
             setUser={setUser}
             handleChange={handleChange}
@@ -98,7 +136,8 @@ export default function App() {
                   handleClick={handleClick}
                 />
               }
-            />
+            /> */}
+
             <Route
               path="/popular"
               element={
