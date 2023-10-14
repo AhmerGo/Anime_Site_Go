@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@consumet/extensions": "^1.4.18",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
