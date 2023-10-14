@@ -33,7 +33,7 @@ export default function App() {
         setRecent(recentData.data.results);
 
         const popularData = await axios.get(
-          `${AniApi}/meta/anilist/popular?page=1&perPage=20`
+          `https://api.consumet.org/meta/anilist/popular`
         );
         setPopular(popularData.data.results);
       } catch (err) {
