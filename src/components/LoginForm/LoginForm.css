@@ -1,0 +1,28 @@
+.login{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: calc(100vh - 12vh);
+  overflow-x: hidden;
+  margin: auto;
+}
+
+.form-container {
+  position: relative;
+  padding:45px;
+  background-color:black;;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+}
+
+.login-button {
+  background-color: black;
+}
+
+.login-button:hover {
+  background-color: red;
+}
