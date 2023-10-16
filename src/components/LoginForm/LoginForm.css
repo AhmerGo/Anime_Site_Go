@@ -1,37 +1,70 @@
-.login {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  height: calc(100vh - 12vh);
-  overflow-x: hidden;
-  margin: auto;
+/* styles.css */
+.popup-login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: grey; /* Change background color to grey */
+  padding: 52px; /* Increase padding by 30% for a bigger form */
+  border-radius: 5px;
+  box-shadow: 0px 0px 13px rgba(0, 0, 0, 0.2); /* Adjust box shadow */
+  z-index: 101; /* Higher than the overlay */
+  display: none; /* Initially hidden */
+  font-size: 20.8px; /* Increase font size by 30% for better readability */
+  color: white; /* Set text color to white */
 }
 
-.form-container {
-  position: relative;
-  padding: 45px;
-  background-color: black;
-  width: 600px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 14px;
+.popup-login.active {
+  display: block; /* Display when active */
 }
 
-.form-container input {
-  color: black; /* This makes the text inside the input fields white */
-  background-color: white; /* This is optional; it sets the background color of the input field */
-  border: none; /* Removes border */
-  padding: 10px; /* Adds some padding inside the input */
-  margin: 10px 0; /* Adds some margin outside the input */
-  border-radius: 4px; /* Rounds the corners of the input */
+.register-text {
+  color: white; /* Set text color to white */
 }
 
-.login-button {
-  background-color: black;
+/* Add styles for the "Register" link */
+.register-link {
+  color: green; /* Set link color to green */
+  text-decoration: underline; /* Add underline to the link */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
 
-.login-button:hover {
-  background-color: red;
+/* Add styles for form inputs */
+.popup-login input[type="text"],
+.popup-login input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: white;
+  color: #333;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.popup-login input[type="text"]:focus,
+.popup-login input[type="password"]:focus {
+  border-color: #4caf50; /* Highlight border on focus */
+}
+
+/* Add styles for form buttons */
+.popup-login button[type="submit"],
+.popup-login button[type="button"] {
+  background-color: #4caf50; /* Green background color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.popup-login button[type="submit"]:hover,
+.popup-login button[type="button"]:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
