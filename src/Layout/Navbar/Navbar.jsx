@@ -46,7 +46,7 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
         {/* LOGO */}
         <div className=" col-span-1 sm:block hidden cursor-pointer">
           <img
-            src={require("../../assets/logo7.png")}
+            src={require("../../assets/logo.png")}
             alt="logo"
             className="w-full h-24 object-contain"
           />

@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fbead15c.css",
+    "main.js": "/static/js/main.e66cd2cf.js",
+    "static/media/fr5.png": "/static/media/fr5.1a700afda3f84d1ec30c.png",
+    "index.html": "/index.html",
+    "main.fbead15c.css.map": "/static/css/main.fbead15c.css.map",
+    "main.e66cd2cf.js.map": "/static/js/main.e66cd2cf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fbead15c.css",
+    "static/js/main.e66cd2cf.js"
+  ]
+}

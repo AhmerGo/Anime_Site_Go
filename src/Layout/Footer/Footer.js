@@ -1,8 +1,8 @@
-import React from 'react';
-import { HiArrowNarrowUp } from 'react-icons/hi';
-import { AnimationOnScroll } from 'react-animation-on-scroll';
-import { NavHashLink } from 'react-router-hash-link';
-import { motion } from 'framer-motion';
+import React from "react";
+import { HiArrowNarrowUp } from "react-icons/hi";
+import { AnimationOnScroll } from "react-animation-on-scroll";
+import { NavHashLink } from "react-router-hash-link";
+import { motion } from "framer-motion";
 
 function Footer() {
   return (
@@ -29,7 +29,7 @@ function Footer() {
         <div className=" pb-4 ">
           <div className="bg-black  rounded-xl bg-opacity-50 max-sm:mx-1 md:mx-5 lg:mx-28 h-16 px-5 flex items-center justify-between max-sm:grid max-sm:grid-cols-2 font-thin max-sm:mb-10 ">
             <a
-              href="https://github.com/jayash-gupta/streamNow"
+              href="https://github.com/AhmerGo"
               target="_blank"
               rel="noreferrer"
               className="text-white text-xl font-light duration-200 hover:border-b-[3.5px] hover:pb-1 border-submain "
@@ -37,7 +37,7 @@ function Footer() {
               GITHUB
             </a>
             <a
-              href="https://www.linkedin.com/in/jayash-gupta-4392881ba/"
+              href="https://www.linkedin.com/in/ahmer-gondal-0a360210b//"
               target="_blank"
               rel="noreferrer"
               className="text-white text-xl font-light duration-200 hover:border-b-[3.5px] hover:pb-1 border-submain "
@@ -45,7 +45,7 @@ function Footer() {
               LINKEDIN
             </a>
             <a
-              href="https://www.instagram.com/jayash__gupta/"
+              href="https://www.instagram.com/ahmergondal"
               target="_blank"
               rel="noreferrer"
               className="text-white text-xl font-light duration-200 hover:border-b-[3.5px] hover:pb-1 border-submain "
@@ -53,12 +53,12 @@ function Footer() {
               INSTAGRAM
             </a>
             <a
-              href="https://www.gmail.com"
+              href="https://www.yahoo.com"
               target="_blank"
               rel="noreferrer"
               className="text-white text-lg font-extralight duration-200 hover:border-b-[3.5px] hover:pb-1 border-submain max-sm:-ml-6 max-sm:text-sm  "
             >
-              er.jayashgupta@gmail.com
+              gondal.ahmer@yahoo.com
             </a>
           </div>
         </div>
