@@ -48,7 +48,7 @@ export class Animeapi {
   }
 
   async getPopular(params = {}) {
-    return this.consumetApiGetCall("/meta/anilist/advanced-search", params);
+    return this.consumetApiGetCall("anime/gogoanime/top-airing", params);
   }
 
   async getUpcomingAnimes(params = {}) {
@@ -63,7 +63,7 @@ export class Animeapi {
 
   async getInfo(id) {
     return (
-      await axios.get(`https://anidote-api.vercel.app/meta/anilist/info/${id}`)
+      await axios.get(`https://api.consumet.org/anime/gogoanime/info/${id}`)
     ).data;
   }
 }

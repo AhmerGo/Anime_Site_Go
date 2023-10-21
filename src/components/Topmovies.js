@@ -26,8 +26,10 @@ function Topmovies() {
   }, [topmovies.length]);
 
   const navigate = useNavigate();
-  function callDescription(id) {
-    navigate("/description", { state: { id: id } });
+  function callDescription(anime) {
+    const titleSlug =
+      anime.title.romaji.toLowerCase().replace(/\s+/g, "-") + "-movie";
+    navigate(`/description/`, { state: { id: titleSlug } });
   }
 
   const { windowDimension } = useWindowResize();
@@ -118,7 +120,7 @@ function Topmovies() {
 
                   <button
                     className=" hover:px-10 bg-black bg-opacity-40 backdrop-blur-lg rounded-full w-auto flex justify-center items-center p-2 px-5 mx-auto max-sm:text-xs transition-all duration-300 ease-in-out "
-                    onClick={() => callDescription(anime.id)}
+                    onClick={() => callDescription(anime)}
                   >
                     <img
                       src={require("../assets/play.png")}

@@ -1,14 +1,14 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { AnimeApi } from '../backend/Animeapi.ts';
-import { useState, useEffect } from 'react';
-import { A11y, Autoplay, Mousewheel, Pagination, EffectFade } from 'swiper';
-import { HiArrowNarrowDown } from 'react-icons/hi';
-import { AnimationOnScroll } from 'react-animation-on-scroll';
-import { NavHashLink } from 'react-router-hash-link';
-import { motion } from 'framer-motion';
-import 'animate.css';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { AnimeApi } from "../backend/Animeapi.ts";
+import { useState, useEffect } from "react";
+import { A11y, Autoplay, Mousewheel, Pagination, EffectFade } from "swiper";
+import { HiArrowNarrowDown } from "react-icons/hi";
+import { AnimationOnScroll } from "react-animation-on-scroll";
+import { NavHashLink } from "react-router-hash-link";
+import { motion } from "framer-motion";
+import "animate.css";
+import { useNavigate } from "react-router-dom";
 
 function Banner() {
   const [trending, setTrending] = useState([]);
@@ -29,8 +29,9 @@ function Banner() {
   }, [trending.length]);
 
   const navigate = useNavigate();
-  function callDescription(id) {
-    navigate('/description', { state: { id: id } });
+  function callDescription(anime) {
+    const titleSlug = anime.title.romaji.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/description/`, { state: { id: titleSlug } });
   }
 
   return (
@@ -64,7 +65,7 @@ function Banner() {
                   <div className=" w-full flex justify-center items-center mx-auto gap-x-9 font-quicksand max-sm:grid max-sm:gap-1 max-sm:text-sm md:text-base lg:text-lg">
                     <p className="flex gap-4 ">
                       <img
-                        src={require('../assets/episode.png')}
+                        src={require("../assets/episode.png")}
                         alt="episode logo"
                         className=" w-7 h-7 max-sm:w-5 max-sm:h-5"
                       />
@@ -72,7 +73,7 @@ function Banner() {
                     </p>
                     <p className="flex gap-4  ">
                       <img
-                        src={require('../assets/calender.png')}
+                        src={require("../assets/calender.png")}
                         alt="episode logo"
                         className=" w-7 h-7 max-sm:w-5 max-sm:h-5"
                       />
@@ -82,10 +83,10 @@ function Banner() {
 
                   <button
                     className=" bg-black bg-opacity-40 rounded-full w-auto flex justify-center items-center p-2 px-5 mx-auto max-sm:text-xs hover:border-2 transition duration-100 ease-in-out border-submain"
-                    onClick={() => callDescription(anime.id)}
+                    onClick={() => callDescription(anime)}
                   >
                     <img
-                      src={require('../assets/play.png')}
+                      src={require("../assets/play.png")}
                       alt="play icon"
                       className=" max-lg:w-8 w-16"
                     />

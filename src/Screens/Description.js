@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { HashLoader } from 'react-spinners';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 // import { SwiperSlide } from 'swiper/react';
-import { AnimeApi } from '../backend/Animeapi.ts';
+import { AnimeApi } from "../backend/Animeapi.ts";
 // import { Swiper } from 'swiper/react';
 // import {
 //   Pagination,
@@ -17,8 +17,10 @@ function Description() {
   const { state } = useLocation();
   const id = state.id;
   const index = state.index;
-  console.log('description page reached ' + id);
-  console.log('epiiiiiiiiii ' + index);
+  const a = state.title;
+  console.log("description page reached " + id);
+  console.log("epiiiiiiiiii " + index);
+  console.log("epiiiiiiiiii " + a);
 
   const [info, setInfo] = useState([]);
 
@@ -41,14 +43,14 @@ function Description() {
   }, [info.length]);
 
   if (loading === true) {
-    console.log('Description : yass we laoded...');
+    console.log("Description : yass we laoded...");
     console.log(info.title.romaji);
-  } else console.log('not laoded yet....');
+  } else console.log("not laoded yet....");
 
   const navigate = useNavigate();
   function callPlayer(episodes) {
-    console.log('watchlist called with episode list : ' + info.episodes);
-    navigate('/watchlist', { state: { episodes: info.episodes } });
+    console.log("watchlist called with episode list : " + info.episodes);
+    navigate("/watchlist", { state: { episodes: info.episodes } });
   }
 
   // setTimeout(10000)
@@ -58,10 +60,10 @@ function Description() {
         className={` h-screen text-white flex items-center justify-center `}
         style={{
           backgroundImage: `url(${info.image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
         }}
       >
         {loading ? (
@@ -76,19 +78,19 @@ function Description() {
                 <p>
                   <span className="bg-black bg-opacity-20 rounded-md px-2 text-submain font-extrabold ">
                     Genre
-                  </span>{' '}
-                  : {info.genres + ' '}
+                  </span>{" "}
+                  : {info.genres + " "}
                 </p>
                 <p>
                   <span className=" bg-black bg-opacity-20 rounded-md px-2 text-submain  font-extrabold ">
                     Episodes
-                  </span>{' '}
+                  </span>{" "}
                   : {info.episodes.length}
                 </p>
                 <p>
                   <span className=" bg-black bg-opacity-20 rounded-md px-2 text-submain  font-extrabold ">
                     Ratings
-                  </span>{' '}
+                  </span>{" "}
                   : {info.rating / 10}
                 </p>
               </div>
@@ -105,7 +107,7 @@ function Description() {
                 }}
               >
                 <img
-                  src={require('../assets/play.png')}
+                  src={require("../assets/play.png")}
                   alt="play icon"
                   className=" max-lg:w-8 w-16"
                 />
