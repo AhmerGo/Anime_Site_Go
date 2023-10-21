@@ -38,7 +38,7 @@ export class Animeapi {
   }
 
   async getTrending(params = {}) {
-    return this.consumetApiGetCall("/meta/anilist/trending", params);
+    return this.consumetApiGetCall("/meta/anilist/advanced-search", params);
   }
 
   async getRecentEpisodes(params = {}) {
@@ -48,10 +48,7 @@ export class Animeapi {
   }
 
   async getPopular(params = {}) {
-    return this.consumetApiGetCall("/meta/anilist/popular", {
-      perPage: 20,
-      ...params,
-    });
+    return this.consumetApiGetCall("/meta/anilist/advanced-search", params);
   }
 
   async getUpcomingAnimes(params = {}) {

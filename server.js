@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
 const logger = require("morgan");
+const axios = require("axios");
 
 // Always require and configure near the top
 require("dotenv").config();
@@ -13,6 +14,19 @@ const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
+app.get("/api/anilist/popular", async (req, res) => {
+  try {
+    // Forward the request to the external API
+    const apiResponse = await axios.get(
+      "https://anidote-api.vercel.app//meta/anilist/popular"
+    );
+    // Send the response of the external API back to your frontend
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 // Configure both serve-favicon & static middleware
 // to serve from the production 'build' folder
