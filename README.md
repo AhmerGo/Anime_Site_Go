@@ -4,10 +4,10 @@ AniDote is an anime website that allows people to stream and enjoy anime content
 ---
 
 ## **Screenshots of the website** :
-![anidotehome](https://github.com/Shaleik9/anime-site/assets/124411560/d620dc2a-c520-4f45-9a89-26a7293d2012)
-![anidoterecent](https://github.com/Shaleik9/anime-site/assets/124411560/d374a236-5a27-4257-870f-c10ffc9c1201)
-![anidotedetail](https://github.com/Shaleik9/anime-site/assets/124411560/59d6c45d-add8-4255-a58d-4e87d1174dc7)
-![animestream](https://github.com/Shaleik9/anime-site/assets/124411560/d4889a37-b270-4ee7-bccc-a7e405766b77)
+![anidotehome](https://i.gyazo.com/c3f1f0b65dadf98f099b07b355fddf23.jpg)
+![anidoterecent](https://i.gyazo.com/2f709e54df95a1ee85e207870a5f680d.jpg)
+![anidotedetail](https://i.gyazo.com/1b49e28c805932efa4f5281e83611a6e.jpg)
+![animestream](https://i.gyazo.com/5b0afaa326cb2bc0f133a94944fc6d71.jpg)
 
 ---
 ## **Technologies Used** :
