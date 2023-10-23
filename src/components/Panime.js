@@ -99,7 +99,7 @@ function Panime() {
     <>
       <div className=" left-0  mt-20 md:-mx-24 lg:-mx-48 ">
         {/* <AnimationOnScroll animateIn="animate__swing" duration={2}> */}
-        <div className=" pb-10 flex justify-center font-monts  max-sm:text-xl md:text-3xl text-submain">
+        <div className="pb-10 flex justify-center font-monoton max-sm:text-xl md:text-3xl text-submain">
           {/* font-monoton */}
           Popular Anime
         </div>
