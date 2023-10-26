@@ -9,6 +9,11 @@ import { HashLoader } from "react-spinners";
 function Watchlist() {
   const { state } = useLocation();
   const episodes = state.episodes;
+  const [startingIndex, setStartingIndex] = useState(0);
+  const [currentEpisode, setCurrentEpisode] = useState(null);
+  const displayEpisodes = episodes.slice(startingIndex, startingIndex + 35);
+  const numColumns = displayEpisodes.length < 10 ? displayEpisodes.length : 10; // Determine the number of columns
+
   console.log("Watchlist page reached with an episodes list : ", episodes);
 
   const [url, setUrl] = useState("");
@@ -36,6 +41,8 @@ function Watchlist() {
 
   const handleClick = (id) => {
     console.log("clicked : " + id);
+    setCurrentEpisode(id);
+
     episodelink(id);
   };
 
@@ -55,17 +62,44 @@ function Watchlist() {
               Episodes
             </p>
             <div className="flex justify-center items-center w-full mx-auto">
-              <div className="mt-10 pb-10 grid grid-cols-10 gap-5">
-                {episodes.map((episode, index) => (
-                  <button
-                    key={index} // Always add a key when rendering a list
-                    className="bg-submain bg-opacity-40 backdrop-blur-2xl rounded-xl px-3 hover:bg-black hover:-translate-y-1 hover:text-white transition-all duration-300"
-                    onClick={() => handleClick(episode.id)}
-                  >
-                    Episode {episode.number}
-                  </button>
-                ))}
+              <button
+                onClick={() => {
+                  if (startingIndex > 0) setStartingIndex(startingIndex - 35);
+                }}
+                className="mr-5 bg-submain bg-opacity-40 backdrop-blur-2xl rounded-full w-10 h-10 flex justify-center items-center hover:bg-black hover:text-white transition-all duration-300"
+              >
+                ←
+              </button>
+
+              <div
+                className={`mt-10 pb-10 grid gap-5 ${
+                  numColumns === 10 ? "grid-cols-10" : `grid-cols-${numColumns}`
+                }`}
+              >
+                {episodes
+                  .slice(startingIndex, startingIndex + 35)
+                  .map((episode, index) => (
+                    <button
+                      key={index}
+                      className={`bg-submain bg-opacity-40 backdrop-blur-2xl rounded-xl px-3 
+            ${currentEpisode === episode.id ? "bg-highlightColor" : ""} 
+            hover:bg-black hover:-translate-y-1 hover:text-white transition-all duration-300`}
+                      onClick={() => handleClick(episode.id)}
+                    >
+                      Episode {episode.number}
+                    </button>
+                  ))}
               </div>
+
+              <button
+                onClick={() => {
+                  if (startingIndex + 35 < episodes.length)
+                    setStartingIndex(startingIndex + 35);
+                }}
+                className="ml-5 bg-submain bg-opacity-40 backdrop-blur-2xl rounded-full w-10 h-10 flex justify-center items-center hover:bg-black hover:text-white transition-all duration-300"
+              >
+                →
+              </button>
             </div>
           </>
         )}

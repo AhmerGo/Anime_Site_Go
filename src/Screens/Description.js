@@ -37,10 +37,8 @@ function Description() {
     }
   };
   useEffect(() => {
-    if (info.length === 0) {
-      getinfo();
-    }
-  }, [info.length]);
+    getinfo();
+  }, [id]);
 
   if (loading === true) {
     console.log("Description : yass we laoded...");

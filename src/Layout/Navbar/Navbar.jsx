@@ -4,13 +4,15 @@ import { NavLink } from "react-router-dom";
 // import { useRef } from 'react';
 import { getUser } from "../../utilities/users-service";
 import * as userService from "../../utilities/users-service";
-
+import { useNavigate } from "react-router-dom";
 import { NavHashLink } from "react-router-hash-link";
 // import { HashLink } from 'react-router-hash-link';
 // import Watch from '../../components/Watch';
 // import Desc from '../../Screens/Description';
 const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
   const buttonRef = useRef(null);
+  const navigate = useNavigate();
+  const backgroundColors = ["bg-green-900", "bg-gray-900"];
 
   useEffect(() => {
     buttonRef.current.click();
@@ -19,6 +21,10 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
   // const Hover = ({ isActive }) => ( isActive ? 'text-white' : hover );
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+
+  function callDescription(id) {
+    navigate(`/description/`, { state: { id: id } });
+  }
   const onChange = (e) => {
     e.preventDefault();
     const val = e.target.value;
@@ -29,7 +35,7 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
       setResults([]);
       return;
     }
-    fetch(`https://api.consumet.org/anime/zoro/${e.target.value}?page=1`)
+    fetch(`https://api.consumet.org/anime/gogoanime/${e.target.value}?page=1`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data.results);
@@ -114,29 +120,45 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
               />
             </form>
             {results.length > 0 && (
-              <ul className="results  text-white mt-10 w-1/6 h-96 items-center justify-center text-center overflow-scroll absolute">
-                {results.map((mov) => (
+              <ul className="results mt-10 w-1/6 h-96 justify-center text-center overflow-y-scroll absolute rounded-lg bg-gray-900 shadow-lg border border-gray-800">
+                {results.map((anime, index) => (
                   <li
-                    className="mt-5 backdrop-blur-3xl rounded-2xl h-60 justify-center items-center flex-col pt-5/6"
+                    className={`flex p-4 justify-between items-center border-b border-gray-800 transform transition-transform duration-200 hover:scale-105 hover:bg-green-700 hover:bg-opacity-70 hover:shadow-xl cursor-pointer ${backgroundColors[1]}`}
                     onClick={() => {
-                      console.log(mov);
+                      console.log(anime);
+                      callDescription(anime.id);
+                      setQuery("");
+                      setResults([]);
                     }}
-                    key={mov.id} // Add a unique key for each result
+                    key={anime.id}
                   >
-                    {mov.title}
-                    <p className="mt-1 backdrop-blur-3xl rounded-2xl justify-center items-center flex group h-52 ml-2 mr-2">
+                    {/* Image on the left */}
+                    <div className="flex-shrink-0 w-1/4 mr-4 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-200">
                       <img
-                        src={mov.image}
-                        className="w-full h-full object-cover"
-                        alt=""
+                        src={anime.image}
+                        className="w-full h-full object-cover transform transition-transform duration-200 hover:scale-105"
+                        alt={anime.title}
                       />
-                    </p>
+                    </div>
+
+                    {/* Anime details on the right */}
+                    <div className="flex-grow text-left">
+                      <h3 className="text-xl font-semibold tracking-wide">
+                        {anime.title}
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-2">
+                        {anime.releaseDate}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-1 capitalize">
+                        Type: {anime.subOrDub}
+                      </p>
+                    </div>
                   </li>
                 ))}
               </ul>
             )}
             {results.length === 0 && query !== "" && (
-              <div className="text-white mt-10 text-center">
+              <div className="text-white mt-10 text-center bg-gray-900 p-4 rounded-lg shadow-lg transform transition-transform duration-200 hover:scale-105">
                 No results found.
               </div>
             )}
