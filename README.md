@@ -14,6 +14,9 @@ Aniplexus is an anime website that allows people to stream and enjoy anime conte
 Javascript, HTML, CSS, Flexbox, ReactJs, ExpressJs, NodeJs, MongoDB, RESTful API
 
 ## **Future Updates** :
+
+**Fix User Database** - MongoDB Atlas conflicting with nginx reverse-proxy, login temporarily fried but sign-up still functional.
+
 **Anime Playlist** - Users will be able to create a playlist to store animes they want to watch.
 
 **Marked as Seen** - Anime enjoyers can see which episodes they have already watched.
