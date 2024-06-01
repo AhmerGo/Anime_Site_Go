@@ -14,19 +14,6 @@ const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
-app.get("/api/anilist/popular", async (req, res) => {
-  try {
-    // Forward the request to the external API
-    const apiResponse = await axios.get(
-      "https://anidote-api.vercel.app//meta/anilist/popular"
-    );
-    // Send the response of the external API back to your frontend
-    res.json(apiResponse.data);
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    res.status(500).send("Internal Server Error");
-  }
-});
 
 // Configure both serve-favicon & static middleware
 // to serve from the production 'build' folder
@@ -36,12 +23,16 @@ app.use(express.static(path.join(__dirname, "build")));
 // CORS middleware: this will apply to all responses
 app.use((req, res, next) => {
   // Set the allowed origin to your specific IP address
-  res.header("Access-Control-Allow-Origin", "http://192.168.4.21:3001");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "http://192.168.4.21:3001",
+    "http://192.168.4.21:3000"
+  );
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // If you're using other HTTP methods, include them in the list
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
 

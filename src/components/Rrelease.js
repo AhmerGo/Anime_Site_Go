@@ -22,15 +22,20 @@ function Rrelease() {
   useEffect(() => {
     const getRecent = async () => {
       try {
-        const { data } = await AnimeApi.getRecentEpisodes();
-        console.log(data); // to check the structure of the data
+        const params = {
+          sort: "[%22START_DATE_DESC%22]",
+          type: "ANIME",
+        };
+        const data = await AnimeApi.getRecentEpisodes(params);
+        console.log("api");
+        console.log(data?.results); // This should log the correct data
         setRecent(data.results); // 'results' contains the array of recent episodes
       } catch (error) {
         console.error("There was an error!", error);
       }
     };
 
-    if (recent.length === 0) {
+    if (recent && recent.length === 0) {
       getRecent();
     }
   }, [recent]);
@@ -129,7 +134,7 @@ function Rrelease() {
             {recent &&
               recent.map((anime) => (
                 <SwiperSlide
-                  key={anime.episodeId}
+                  key={anime.id}
                   className="relative group rounded-xl overflow-hidden hover:shadow-xl"
                   style={{
                     height: `${slideHeight()}em`,
@@ -140,11 +145,18 @@ function Rrelease() {
                 >
                   <img
                     src={anime.image}
-                    alt={`${anime.title} Episode ${anime.episodeNumber}`}
+                    alt={`${anime.title.userPreferred} ${
+                      anime.currentEpisode
+                        ? `Episode ${anime.currentEpisode}`
+                        : ""
+                    }`}
                     className="w-full h-full object-cover group-hover:animate-pulse"
                   />
                   <div className="absolute w-full pt-8 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center text-center text-white font-extrabold max-sm:font-semibold max-sm:text-base md:text-lg lg:text-2xl top-0 bottom-0 right-0 left-0 group-hover:hidden">
-                    {anime.title} - Episode {anime.episodeNumber}
+                    {anime.title.userPreferred} -{" "}
+                    {anime.currentEpisode
+                      ? `Episode ${anime.currentEpisode}`
+                      : "Not yet aired"}
                   </div>
                   <div className="absolute md:top-36 lg:top-60 max-sm:top-16 left-0 bottom-0 right-0 hidden group-hover:block transition-all duration-500 ease-in-out">
                     <button
@@ -156,7 +168,9 @@ function Rrelease() {
                         alt="play icon"
                         className="max-lg:w-8 w-16"
                       />
-                      Watch Episode {anime.episodeNumber}
+                      {anime.currentEpisode
+                        ? `Watch Episode ${anime.currentEpisode}`
+                        : "More Info"}
                     </button>
                   </div>
                 </SwiperSlide>

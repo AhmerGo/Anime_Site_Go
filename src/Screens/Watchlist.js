@@ -39,9 +39,10 @@ function Watchlist() {
     episodelink(); // Fetch the initial episode link on component mount
   }, []); // Empty dependency array means this useEffect runs once when component mounts
 
-  const handleClick = (id) => {
+  const handleClick = (id, episode) => {
     console.log("clicked : " + id);
-    setCurrentEpisode(id);
+    console.log("current ep: " + episode);
+    setCurrentEpisode(episode);
 
     episodelink(id);
   };
@@ -82,11 +83,15 @@ function Watchlist() {
                     <button
                       key={index}
                       className={`bg-submain bg-opacity-40 backdrop-blur-2xl rounded-xl px-3 
-            ${currentEpisode === episode.id ? "bg-highlightColor" : ""} 
-            hover:bg-black hover:-translate-y-1 hover:text-white transition-all duration-300`}
-                      onClick={() => handleClick(episode.id)}
+                      ${
+                        currentEpisode === episode.episode
+                          ? "bg-highlightColor"
+                          : ""
+                      } 
+                      hover:bg-black hover:-translate-y-1 hover:text-white transition-all duration-300`}
+                      onClick={() => handleClick(episode.id, episode.episode)}
                     >
-                      Episode {episode.number}
+                      Episode {episode.episode}
                     </button>
                   ))}
               </div>

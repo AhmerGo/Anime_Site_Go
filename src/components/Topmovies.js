@@ -27,9 +27,7 @@ function Topmovies() {
 
   const navigate = useNavigate();
   function callDescription(anime) {
-    const titleSlug =
-      anime.title.romaji.toLowerCase().replace(/\s+/g, "-") + "-movie";
-    navigate(`/description/`, { state: { id: titleSlug } });
+    navigate("/description", { state: { id: anime.id } });
   }
 
   const { windowDimension } = useWindowResize();

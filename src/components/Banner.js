@@ -29,9 +29,8 @@ function Banner() {
   }, [trending.length]);
 
   const navigate = useNavigate();
-  function callDescription(anime) {
-    const titleSlug = anime.title.romaji.toLowerCase().replace(/\s+/g, "-");
-    navigate(`/description/`, { state: { id: titleSlug } });
+  function callDescription(id) {
+    navigate("/description", { state: { id: id } });
   }
 
   return (
@@ -83,7 +82,7 @@ function Banner() {
 
                   <button
                     className=" bg-black bg-opacity-40 rounded-full w-auto flex justify-center items-center p-2 px-5 mx-auto max-sm:text-xs hover:border-2 transition duration-100 ease-in-out border-submain"
-                    onClick={() => callDescription(anime)}
+                    onClick={() => callDescription(anime.id)}
                   >
                     <img
                       src={require("../assets/play.png")}

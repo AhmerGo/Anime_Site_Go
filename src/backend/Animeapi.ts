@@ -10,7 +10,7 @@ const AnimeProviders = {
 export type AnimeProvider = keyof typeof AnimeProviders;
 
 export class Animeapi {
-  host = "https://api.consumet.org";
+  host = "https://anidote-api.vercel.app";
   provider;
 
   constructor(provider: AnimeProvider = "GOGO") {
@@ -22,7 +22,6 @@ export class Animeapi {
     return (
       await axios.get(url, {
         params: {
-          provider: this.provider,
           ...params,
         },
       })
@@ -42,13 +41,25 @@ export class Animeapi {
   }
 
   async getRecentEpisodes(params = {}) {
-    return await axios.get(
-      "https://anidote-api.vercel.app/anime/gogoanime/recent-episodes"
-    );
+    return (
+      await axios.get(
+        "https://anidote-api.vercel.app/meta/anilist/advanced-search?sort=[%22TRENDING_DESC%22]&type=ANIME",
+        {
+          params: {},
+        }
+      )
+    ).data;
   }
 
   async getPopular(params = {}) {
-    return this.consumetApiGetCall("anime/gogoanime/top-airing", params);
+    return (
+      await axios.get(
+        "https://anidote-api.vercel.app/meta/anilist/advanced-search?type=ANIME&sort=[%22POPULARITY_DESC%22]&status=RELEASING",
+        {
+          params: {},
+        }
+      )
+    ).data;
   }
 
   async getUpcomingAnimes(params = {}) {
@@ -63,7 +74,7 @@ export class Animeapi {
 
   async getInfo(id) {
     return (
-      await axios.get(`https://api.consumet.org/anime/gogoanime/info/${id}`)
+      await axios.get(`https://anidote-api.vercel.app/meta/anilist/info/${id}`)
     ).data;
   }
 }

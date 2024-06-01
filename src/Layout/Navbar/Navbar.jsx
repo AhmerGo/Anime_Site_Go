@@ -35,7 +35,9 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
       setResults([]);
       return;
     }
-    fetch(`https://api.consumet.org/anime/gogoanime/${e.target.value}?page=1`)
+    fetch(
+      `https://anidote-api.vercel.app/meta/anilist/${e.target.value}?page=1`
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data.results);
@@ -137,20 +139,23 @@ const Navbar = forwardRef(({ user, onSignInClick, onSignOutClick }) => {
                       <img
                         src={anime.image}
                         className="w-full h-full object-cover transform transition-transform duration-200 hover:scale-105"
-                        alt={anime.title}
+                        alt={anime.title.english}
                       />
                     </div>
 
                     {/* Anime details on the right */}
                     <div className="flex-grow text-left">
                       <h3 className="text-xl font-semibold tracking-wide">
-                        {anime.title}
-                      </h3>
+                        {anime.title?.english ||
+                          anime.title?.romaji ||
+                          anime.title?.native ||
+                          anime.title?.userPreferred}
+                      </h3>{" "}
                       <p className="text-xs text-gray-400 mt-2">
                         {anime.releaseDate}
                       </p>
                       <p className="text-sm text-gray-500 mt-1 capitalize">
-                        Type: {anime.subOrDub}
+                        Type: {anime.status}
                       </p>
                     </div>
                   </li>

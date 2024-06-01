@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 // import { SwiperSlide } from 'swiper/react';
 import { AnimeApi } from "../backend/Animeapi.ts";
+import axios from "axios";
 // import { Swiper } from 'swiper/react';
 // import {
 //   Pagination,
@@ -18,18 +19,20 @@ function Description() {
   const id = state.id;
   const index = state.index;
   const a = state.title;
-  console.log("description page reached " + id);
-  console.log("epiiiiiiiiii " + index);
-  console.log("epiiiiiiiiii " + a);
 
   const [info, setInfo] = useState([]);
-
+  const [episodeList, setEpisodeList] = useState([]);
   const [loading, setLoading] = useState(false);
   console.log(loading);
   const getinfo = async () => {
     try {
       const data = await AnimeApi.getInfo(id);
       setInfo(data);
+      const episodeData = await axios.get(
+        `https://api.amvstr.me/api/v2/episode/${id}`
+      );
+      console.log(episodeData.data);
+      setEpisodeList(episodeData.data);
       setLoading(true);
       return data;
     } catch (error) {
@@ -47,8 +50,8 @@ function Description() {
 
   const navigate = useNavigate();
   function callPlayer(episodes) {
-    console.log("watchlist called with episode list : " + info.episodes);
-    navigate("/watchlist", { state: { episodes: info.episodes } });
+    console.log("watchlist called with episode list : " + episodeList);
+    navigate("/watchlist", { state: { episodes: episodeList.episodes } });
   }
 
   // setTimeout(10000)
@@ -83,7 +86,7 @@ function Description() {
                   <span className=" bg-black bg-opacity-20 rounded-md px-2 text-submain  font-extrabold ">
                     Episodes
                   </span>{" "}
-                  : {info.episodes.length}
+                  : {info.totalEpisodes}
                 </p>
                 <p>
                   <span className=" bg-black bg-opacity-20 rounded-md px-2 text-submain  font-extrabold ">
